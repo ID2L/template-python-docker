@@ -50,7 +50,7 @@ docker run -it my_python_app
 To automatically generate the `requirements.txt` file from your code:
 
 ```bash
-pipreqs --force .
+pipreqs --force src/
 ```
 
 This command will:

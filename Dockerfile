@@ -1,11 +1,11 @@
-# Utilisation de l'image Python officielle (vous pouvez changer la version selon vos besoins)
+# Use the official Python image (you can change the version according to your needs)
 FROM python:3.10-slim
 
-# Définition du répertoire de travail
+# Set the working directory
 WORKDIR /app
 
-# Copie du fichier requirements.txt
-COPY requirements.txt .
+# Copy the requirements.txt file from source code (not development dependencies)
+COPY src/requirements.txt .
 
-# Installation des dépendances du projet
+# Install project dependencies
 RUN pip install -r requirements.txt 
