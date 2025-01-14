@@ -1,22 +1,23 @@
 # Template Python Docker
 
-Ce template fournit une configuration Docker minimale pour vos projets Python.
+This template provides a minimal Docker configuration for your Python projects.
 
-## Prérequis
+## Prerequisites
 
-- Python installé sur votre machine de développement
-- pipreqs installé : `pip install pipreqs`
+- Python installed on your development machine
+- pipreqs installed: `pip install pipreqs`
+- pytest and pytest-cov for testing: `pip install pytest pytest-cov`
 
-## Téléchargement du template
+## Template Download
 
-Pour utiliser ce template sans l'histori scriptque Git, vous avez deux options :
+To use this template without Git history, you have three options:
 
-1. Via l'interface GitHub :
-   - Cliquez sur le bouton vert "Use this template"
-   - Choisissez "Create a new repository"
-   - Ou "Download ZIP" pour télécharger sans créer de repository
+1. Via GitHub interface:
+   - Click on the green "Use this template" button
+   - Choose "Create a new repository"
+   - Or "Download ZIP" to download without creating a repository
 
-2. Via la ligne de commande :
+2. Via command line with Git:
 ```bash
 mv .git .git_tmp
 git clone --depth 1 https://github.com/ID2L/template-python-docker.git .
@@ -24,29 +25,88 @@ rm -rf .git
 mv .git_tmp .git
 ```
 
-## Utilisation du Dockerfile
-
-1. Construction de l'image :
+3. Via wget:
 ```bash
-docker build -t mon_app_python .
+wget https://github.com/ID2L/template-python-docker/archive/refs/heads/main.zip -O template.zip
+unzip template.zip
+mv template-python-docker-main/* .
+rm -rf template-python-docker-main template.zip
 ```
 
-2. Exécution du conteneur :
+## Using the Dockerfile
+
+1. Building the image:
 ```bash
-docker run -it mon_app_python
+docker build -t my_python_app .
 ```
 
-## Gestion des dépendances
+2. Running the container:
+```bash
+docker run -it my_python_app
+```
 
-Pour générer automatiquement le fichier `requirements.txt` à partir de votre code :
+## Dependencies Management
+
+To automatically generate the `requirements.txt` file from your code:
 
 ```bash
 pipreqs --force .
 ```
 
-Cette commande va :
-- Analyser tous les fichiers Python de votre projet
-- Identifier toutes les dépendances utilisées
-- Créer ou mettre à jour le fichier `requirements.txt`
+This command will:
+- Analyze all Python files in your project
+- Identify all used dependencies
+- Create or update the `requirements.txt` file
 
-> Note : L'option `--force` permet d'écraser le fichier requirements.txt s'il existe déjà.
+> Note: The `--force` option allows overwriting the requirements.txt file if it already exists.
+
+## Tests
+
+### Test Structure
+
+Tests should be placed in the `tests/` directory. Here's a recommended structure:
+
+```
+project/
+│
+├── src/
+│   └── my_module.py
+│
+└── tests/
+    ├── __init__.py
+    ├── test_my_module.py
+    └── conftest.py  # pytest configuration file (optional)
+```
+
+### Running Tests
+
+To run the tests:
+
+```bash
+# Run all tests
+pytest
+
+# Run tests with more details
+pytest -v
+
+# Run a specific test file
+pytest tests/test_my_module.py
+```
+
+### Code Coverage
+
+To generate a code coverage report:
+
+```bash
+# Generate a terminal report
+pytest --cov=src tests/
+
+# Generate a detailed HTML report
+pytest --cov=src --cov-report=html tests/
+```
+
+The HTML report will be generated in the `htmlcov/` directory. Open `htmlcov/index.html` in your browser to view the results.
+
+For more information, visit:
+- [Official pytest documentation](https://docs.pytest.org/)
+- [pytest-cov documentation](https://pytest-cov.readthedocs.io/)
