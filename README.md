@@ -1,14 +1,46 @@
 # Template Python Docker
 
-This template provides a minimal Docker configuration for your Python projects.
+This template provides a minimal Docker configuration for Python projects, with a clear and reproducible project structure.
+
+## Project Structure
+
+Below is the template structure. **Note: The `.py` files in `tests/`, `scripts/`, and `module/` directories are provided as examples and should be replaced with your own code.**
+
+```
+project/
+│
+├── src/                    # Main source code
+│   ├── module/            # Reusable Python modules
+│   │   ├── matrix.py      # (example)
+│   │   └── hello_world.py # (example)
+│   ├── scripts/           # Executable scripts
+│   │   └── my_script.py   # (example)
+│   └── requirements.txt   # Project dependencies
+│
+├── tests/                 # Unit tests
+│   ├── __init__.py
+│   ├── conftest.py       # pytest configuration
+│   ├── test_matrix.py    # (example)
+│   └── test_hello_world.py # (example)
+│
+└── Dockerfile            # Docker configuration
+```
 
 ## Prerequisites
 
 - Python installed on your development machine
 - pipreqs installed: `pip install pipreqs`
-- pytest and pytest-cov for testing: `pip install pytest pytest-cov`
+- pytest and pytest-cov for testing and coverage:
+  ```bash
+  pip install pytest
+  pip install pytest-cov
+  ```
+  or in one command:
+  ```bash
+  pip install pytest pytest-cov
+  ```
 
-## Template Download
+## Using the Template
 
 To use this template without Git history, you have three options:
 
@@ -19,10 +51,10 @@ To use this template without Git history, you have three options:
 
 2. Via command line with Git:
 ```bash
-mv .git .git_tmp
-git clone --depth 1 https://github.com/ID2L/template-python-docker.git .
+git clone --depth 1 https://github.com/ID2L/template-python-docker.git my_project
+cd my_project
 rm -rf .git
-mv .git_tmp .git
+git init
 ```
 
 3. Via wget:
@@ -33,7 +65,19 @@ mv template-python-docker-main/* .
 rm -rf template-python-docker-main template.zip
 ```
 
-## Using the Dockerfile
+## Code Organization
+
+### Module
+
+The `src/module/` directory contains reusable Python modules. For example:
+- `matrix.py`: Implementation of matrix functions
+- `hello_world.py`: Simple module example
+
+### Scripts
+
+The `src/scripts/` directory contains executable scripts that use the modules.
+
+## Using Docker
 
 1. Building the image:
 ```bash
@@ -54,28 +98,22 @@ pipreqs --force src/
 ```
 
 This command will:
-- Analyze all Python files in your project
+- Analyze all Python files in your project src folder
 - Identify all used dependencies
 - Create or update the `requirements.txt` file
-
-> Note: The `--force` option allows overwriting the requirements.txt file if it already exists.
 
 ## Tests
 
 ### Test Structure
 
-Tests should be placed in the `tests/` directory. Here's a recommended structure:
+Tests are placed in the `tests/` directory. The recommended structure is:
 
 ```
-project/
-│
-├── src/
-│   └── my_module.py
-│
-└── tests/
-    ├── __init__.py
-    ├── test_my_module.py
-    └── conftest.py  # pytest configuration file (optional)
+tests/
+├── __init__.py           # Makes tests directory importable
+├── conftest.py          # pytest configuration (shared fixtures)
+├── test_matrix.py       # Tests for matrix.py
+└── test_hello_world.py  # Tests for hello_world.py
 ```
 
 ### Running Tests
@@ -90,7 +128,7 @@ pytest
 pytest -v
 
 # Run a specific test file
-pytest tests/test_my_module.py
+pytest tests/test_matrix.py
 ```
 
 ### Code Coverage
@@ -107,6 +145,7 @@ pytest --cov=src --cov-report=html tests/
 
 The HTML report will be generated in the `htmlcov/` directory. Open `htmlcov/index.html` in your browser to view the results.
 
-For more information, visit:
+## For More Information
+
 - [Official pytest documentation](https://docs.pytest.org/)
 - [pytest-cov documentation](https://pytest-cov.readthedocs.io/)

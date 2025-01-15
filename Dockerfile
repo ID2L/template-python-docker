@@ -8,4 +8,8 @@ WORKDIR /app
 COPY src/requirements.txt .
 
 # Install project dependencies
-RUN pip install -r requirements.txt 
+RUN pip install -r requirements.txt
+
+COPY src/ .
+
+CMD ["python", "src/scripts/my_script.py"]
